@@ -5,7 +5,6 @@ namespace Khalti\KhaltiLaravel;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Khalti\KhaltiLaravel\Commands\KhaltiLaravelCommand;
 
 class KhaltiLaravelServiceProvider extends PackageServiceProvider
 {
@@ -20,11 +19,10 @@ class KhaltiLaravelServiceProvider extends PackageServiceProvider
             ->name('khalti-laravel')
             ->hasConfigFile(['khalti-laravel'])
             ->publishesServiceProvider('Khalti')
-            ->hasInstallCommand(function(InstallCommand $command) {
-        $command
-            ->publishConfigFile();
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->publishConfigFile();
             });
 
     }
-
 }

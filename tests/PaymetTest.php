@@ -4,11 +4,13 @@ namespace Khalti\KhaltiLaravel;
 
 use Illuminate\Http\Request;
 use Orchestra\Testbench\TestCase;
-class PaymetTest extends TestCase{
+
+class PaymetTest extends TestCase
+{
     public function testEPaymentVerificationTest()
     {
         $requestData = [
-            'pidx' => "uqGBzgkoiVMAvw8abrxXtD",
+            'pidx' => 'uqGBzgkoiVMAvw8abrxXtD',
             // Add other required fields here
         ];
         $request = new Request($requestData);
@@ -22,5 +24,4 @@ class PaymetTest extends TestCase{
         $this->assertArrayHasKey('fee', $response);
         $this->assertArrayHasKey('refunded', $response);
     }
-
 }

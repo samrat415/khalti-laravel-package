@@ -4,6 +4,7 @@ namespace Khalti\KhaltiLaravel;
 
 use Illuminate\Support\ServiceProvider;
 use Khalti\KhaltiLaravel\Service\KhaltiService;
+
 class KhaltiServiceProvider extends ServiceProvider
 {
     public function register()

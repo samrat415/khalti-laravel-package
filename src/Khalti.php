@@ -3,12 +3,11 @@
 namespace Khalti\KhaltiLaravel;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Khalti\KhaltiLaravel\DataTransferObjects\KhaltiCustomerInfoDto;
 use Khalti\KhaltiLaravel\DataTransferObjects\KhaltiDto;
-use Khalti\KhaltiLaravel\Service\KhaltiService ;
+use Khalti\KhaltiLaravel\Service\KhaltiService;
 
 class Khalti extends ServiceProvider
 {
@@ -30,13 +29,15 @@ class Khalti extends ServiceProvider
         ]);
 
         if ($validation->fails()) {
-            $errors = implode(",", $validation->messages()->all());
+            $errors = implode(',', $validation->messages()->all());
+
             return response()->json(['success' => false, 'message' => $errors], 400);
         }
         $config = config('khalti-laravel');
         // Create DTOs
         $khaltiCustomerInfo = KhaltiCustomerInfoDto::fromRequest($request);
         $khaltiDto = KhaltiDto::fromRequest($request);
+
         // Generate payment request using KhaltiService
         return (new KhaltiService($config))
             ->ePaymentGenerateRequest($khaltiDto, $khaltiCustomerInfo);
@@ -45,8 +46,9 @@ class Khalti extends ServiceProvider
     public static function ePaymentValidationRequest(Request $request)
     {
         $config = config('khalti-laravel');
+
         // Validate payment using KhaltiService
         return (new KhaltiService($config))
-            ->validateEPayment($request->input("pidx", "r4wSp74utdRV9G7XRJVcnY"), self::$config);
+            ->validateEPayment($request->input('pidx', 'r4wSp74utdRV9G7XRJVcnY'), self::$config);
     }
 }
