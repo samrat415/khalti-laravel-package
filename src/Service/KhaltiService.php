@@ -5,21 +5,28 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client as Guzzle;
 use Khalti\KhaltiLaravel\DataTransferObjects\KhaltiCustomerInfoDto;
 use Khalti\KhaltiLaravel\DataTransferObjects\KhaltiDto;
-
+use Illuminate\Support\Facades\Config;
 class KhaltiService
 {
-    public function __construct(
+    private $config;
+    private mixed $ePaymentInitiateUrl;
+    private string $paymentValidationUrl;
+    private string $authToken;
+    private string $returnUrl;
+    private string $websiteUrl;
 
-    )
+    public function __construct(array $config)
     {
-        $config = config('khalti-laravel.providers.khalti.'.config('khalti-laravel.env'));
-       $this->ePaymentInitiateUrl =$config['ePayment_initiate_url'];
-       $this->paymentValidationUrl  = $config['ePayment_initiate_url'];
-       $this->returnUrl = $config['ePayment_initiate_url'];
-       $this->websiteUrl = $config['ePayment_initiate_url'];
-       $this->authToken = $config['LIVE_SECRET_KEY'];
+        $this->config = $config;
+//        print_r($this->config);
+        // Set your properties using the config array
+        $this->ePaymentInitiateUrl = $this->config['ePayment_initiate_url'];
+        $this->paymentValidationUrl = $this->config['payment_validation_url'];
+        $this->authToken = $this->config['LIVE_SECRET_KEY'];
+        $this->returnUrl = $this->config['return_url'];
+        $this->websiteUrl = $this->config['website_url'];
+        // Set other properties accordingly
     }
-
     public function ePaymentGenerateRequest(KhaltiDto $dto, KhaltiCustomerInfoDto $customerInfoDto )
     {
         $response = Http::withHeaders([
@@ -39,7 +46,7 @@ class KhaltiService
         $response = Http::withHeaders([
             "Authorization" => "Key {$this->authToken}",
             'Content-Type' => 'application/json'
-        ])->post("https://a.khalti.com/api/v2/epayment/lookup/",[
+        ])->post("{$this->paymentValidationUrl}",[
             'pidx'=>$pidx,
         ]);
         return $response;

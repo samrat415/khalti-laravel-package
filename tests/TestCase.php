@@ -1,10 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace Khalti\KhaltiLaravel\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Khalti\KhaltiLaravel\Khalti;
 use Orchestra\Testbench\TestCase as Orchestra;
-use VendorName\Skeleton\SkeletonServiceProvider;
+use Khalti\KhaltiLaravel\KhaltiLaravelServiceProvider;
+
 
 class TestCase extends Orchestra
 {
@@ -13,24 +15,35 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'VendorName\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Khalti\\KhaltiLaravel\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            SkeletonServiceProvider::class,
+            KhaltiLaravelServiceProvider::class,
+            Khalti::class,
         ];
     }
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
-
+//        // Load the configuration file
+//        $configFilePath = __DIR__.'/../config/khalti-laravel.php';
+//
+//        if (file_exists($configFilePath)) {
+//            $config = include $configFilePath;
+//
+//            // Set the loaded configuration values
+//            $app['config']->set('khalti-laravel', $config);
+//        } else {
+//            throw new \Exception("Configuration file khalti-laravel.php not found at: $configFilePath");
+//        }
         /*
-        $migration = include __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_khalti-laravel_table.php.stub';
         $migration->up();
         */
     }
+
 }

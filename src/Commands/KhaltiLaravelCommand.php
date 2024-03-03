@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Khalti\KhaltiLaravel\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class KhaltiLaravelCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'khalti-laravel';
 
     public $description = 'My command';
 

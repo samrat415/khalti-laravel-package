@@ -3,38 +3,50 @@
 namespace Khalti\KhaltiLaravel;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
 use Khalti\KhaltiLaravel\DataTransferObjects\KhaltiCustomerInfoDto;
 use Khalti\KhaltiLaravel\DataTransferObjects\KhaltiDto;
 use Khalti\KhaltiLaravel\Service\KhaltiService ;
 
-class Khalti
+class Khalti extends ServiceProvider
 {
-    public function __construct()
+    private static $config;
+
+    public function register()
     {
-        $this->khalti = new KhaltiService();
+        // Load the configuration
+        self::$config = $this->app['config']->get('khalti-laravel');
+
     }
 
-    public function ePaymentInitiateRequest(Request $request )
+    public static function ePaymentInitiateRequest(Request $request)
     {
+        // Your validation logic
         $validation = Validator::make($request->all(), [
             'purchase_order_id' => 'required',
-            'amount' => 'required | numeric ',
+            'amount' => 'required|numeric',
         ]);
+
         if ($validation->fails()) {
             $errors = implode(",", $validation->messages()->all());
-            return response()->json(['success'=>false,'message'=>$errors], 400);
+            return response()->json(['success' => false, 'message' => $errors], 400);
         }
+        $config = config('khalti-laravel');
+        // Create DTOs
         $khaltiCustomerInfo = KhaltiCustomerInfoDto::fromRequest($request);
         $khaltiDto = KhaltiDto::fromRequest($request);
-        return (($this->khalti)->ePaymentGenerateRequest($khaltiDto,$khaltiCustomerInfo));
+        // Generate payment request using KhaltiService
+        return (new KhaltiService($config))
+            ->ePaymentGenerateRequest($khaltiDto, $khaltiCustomerInfo);
     }
 
-    public function ePaymentValidationRequest(Request $request){
-        return ($this->khalti)
-            ->validateEPayment(
-                $request->input("pidx","r4wSp74utdRV9G7XRJVcnY")
-            );
+    public static function ePaymentValidationRequest(Request $request)
+    {
+        $config = config('khalti-laravel');
+        // Validate payment using KhaltiService
+        return (new KhaltiService($config))
+            ->validateEPayment($request->input("pidx", "r4wSp74utdRV9G7XRJVcnY"), self::$config);
     }
-
 }

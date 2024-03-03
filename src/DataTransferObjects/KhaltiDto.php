@@ -1,5 +1,5 @@
 <?php
-namespace SamratThapa\SamratKhalti\DataTransferObjects;
+namespace Khalti\KhaltiLaravel\DataTransferObjects;
 class KhaltiDto{
     public function __construct(
         public readonly string $purchaseOrderId,

@@ -1,5 +1,5 @@
 <?php
-namespace SamratThapa\SamratKhalti\DataTransferObjects;
+namespace Khalti\KhaltiLaravel\DataTransferObjects;
 class KhaltiCustomerInfoDto{
 
     public function __construct(
