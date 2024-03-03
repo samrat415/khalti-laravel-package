@@ -126,8 +126,6 @@ Here's an example of the expected request payload:
 Please note that `Khalti::ePaymentValidationRequest($request)` expects the `$request` object to have a `pidx` field and `$request` to be of type `Illuminate\Http\Request`.
 
 --- 
-
-Feel free to adjust the formatting or wording as needed.
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within this package, please send an email to the maintainer at support@khalti.com.
@@ -141,6 +139,3 @@ If you discover a security vulnerability within this package, please send an ema
 
 This package is open-sourced software licensed under the [MIT license](LICENSE.md).
 
----
-
-Feel free to modify the content as needed.
